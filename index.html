@@ -13,11 +13,11 @@
         }
 
         #map {
-            width: 100%;
+            width: 80%;
             height: 600px;
         }
     </style>
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Leaflet JavaScript -->
@@ -37,7 +37,8 @@
         <div>
             <a href=https://www.meteoblue.com/de/wetter/woche/vallon-pont-d%27arc_frankreich_2970885>Meteoblue
                 Website</a>
-            <a href=https://www.meteoblue.com/de/wetter/maps/deutschland_deutschland_2921044#coords=6.64/44.729/4.803&map=precipitationProbability~hourly~auto~0.1%20mm~none>Meteoblue
+            <a
+                href=https://www.meteoblue.com/de/wetter/maps/deutschland_deutschland_2921044#coords=6.64/44.729/4.803&map=precipitationProbability~hourly~auto~0.1%20mm~none>Meteoblue
                 Niederschlag WKeit</a></a>
         </div>
         <!-- <iframe class="weather-iframe"
@@ -46,7 +47,7 @@
         </iframe> -->
     </div>
     <div>
-        <iframe width="100%" height="400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+        <iframe width="80%" height="400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
             sandbox="allow-forms allow-scripts allow-same-origin"
             src="https://www.geoportail.gouv.fr/embed/visu.html?c=4.419205804836064,44.3757015635546&z=17&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&l1=HYDROGRAPHY.BCAE.2024::GEOPORTAIL:OGC:WMTS(1)&l2=TRANSPORTNETWORKS.ROADS::GEOPORTAIL:OGC:WMTS(1)&l3=GEOGRAPHICALNAMES.NAMES::GEOPORTAIL:OGC:WMTS(1)&l4=UTILITYANDGOVERNMENTALSERVICES.IGN.POI.SANTE::GEOPORTAIL:OGC:WMS(1)&l5=POI.CAMPING::GEOPORTAIL:OGC:WMS(1)&l6=POI.TOURISM_INFORMATION::GEOPORTAIL:OGC:WMS(1)&l7=PROTECTEDAREAS.PRSF::GEOPORTAIL:OGC:WMS(1)&permalink=yes"
             allowfullscreen></iframe>
@@ -54,7 +55,7 @@
 
     <h1>Ardèche River Map</h1>
     <div id="map"></div>
-    
+
     <script>
         // Function to fetch weather data and update the DOM
         async function fetchWeather() {
@@ -94,6 +95,23 @@
         });
 
         // Create Rapids
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        };
+        function onEachFeature(feature, layer) {
+            // does this feature have a property named popupContent?
+            if (feature.properties && feature.properties.name) {
+                layer.bindPopup(feature.properties.name);
+            }
+
+        }
+
+
         var rapidsPoints = {
             "type": "FeatureCollection",
             "generator": "overpass-turbo",
@@ -631,7 +649,17 @@
                 }
             ]
         }
-        var rapids = L.geoJSON(rapidsPoints)
+        var rapids = L.geoJSON(rapidsPoints, {
+            pointToLayer: function (feature, latlng) {
+                var smallIcon = L.icon({
+                    iconAnchor: [14, 14],
+                    popupAnchor: [1, -24],
+                    iconUrl: 'icons/wave.png'
+                });
+                return L.marker(latlng, { icon: smallIcon});
+            },
+                onEachFeature: onEachFeature
+        })
         // Create River
         var riverLines = {
             "type": "FeatureCollection",
