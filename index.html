@@ -23,6 +23,8 @@
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 </head>
 
 <body>
@@ -654,7 +656,7 @@
                 var smallIcon = L.icon({
                     iconAnchor: [14, 14],
                     popupAnchor: [1, -24],
-                    iconUrl: 'icons/wave.png'
+                    iconUrl: 'icons/wave_pink_s.png'
                 });
                 return L.marker(latlng, { icon: smallIcon});
             },
@@ -18733,7 +18735,8 @@
         var map = L.map('map', {
             center: [44.375146, 4.421023],
             zoom: 10,
-            layers: [osm, FranceOrtho]
+            layers: [osm, FranceOrtho],
+            fullscreenControl: true
         });
 
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
